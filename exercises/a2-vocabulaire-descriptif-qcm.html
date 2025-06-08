@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulaire descriptif - A2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background-color: #F7F3F0;
+            color: #2F2F2F;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+        }
+
+        .cecr-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #FFF8DC;
+            color: #2F2F2F;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            border: 2px solid #CC785C;
+        }
+
+        h1 {
+            color: #CC785C;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .example-box {
+            background: #E5E5E5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #CC785C;
+        }
+
+        .example-box h3 {
+            color: #CC785C;
+            margin-bottom: 10px;
+        }
+
+        .instruction {
+            position: relative;
+            cursor: help;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .instruction:hover::after {
+            content: attr(data-en);
+            position: absolute;
+            background: #2F2F2F;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            bottom: 100%;
+            left: 0;
+            margin-bottom: 5px;
+        }
+
+        .vocabulary-list {
+            background: #F0F8FF;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #CC785C;
+        }
+
+        .vocabulary-list h4 {
+            color: #CC785C;
+            margin-bottom: 10px;
+        }
+
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .vocab-item {
+            background: white;
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .question-block {
+            background: #F9F9F9;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid #E5E5E5;
+        }
+
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .option {
+            background: white;
+            border: 2px solid #E5E5E5;
+            border-radius: 6px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            border-color: #CC785C;
+            background: #FFF8DC;
+        }
+
+        .option.selected {
+            border-color: #CC785C;
+            background: #FFF8DC;
+        }
+
+        .option.correct {
+            border-color: #4A8B3A;
+            background: #E8F5E8;
+        }
+
+        .option.incorrect {
+            border-color: #C53030;
+            background: #FFE6E6;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .btn {
+            background: #CC785C;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background: #B86A4E;
+        }
+
+        .btn:disabled {
+            background: #E5E5E5;
+            cursor: not-allowed;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .feedback.success {
+            background: #E8F5E8;
+            color: #4A8B3A;
+            border: 1px solid #4A8B3A;
+        }
+
+        .feedback.error {
+            background: #FFE6E6;
+            color: #C53030;
+            border: 1px solid #C53030;
+        }
+
+        .actions {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .score-display {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cecr-badge">A2</div>
+        
+        <h1>Vocabulaire descriptif</h1>
+        <p class="subtitle">Description des personnes - Niveau A2</p>
+        
+        <div class="example-box">
+            <h3>📚 Rappel</h3>
+            <p><strong>Accord des adjectifs :</strong></p>
+            <p>• Masculin : Il est grand / fort / amusant</p>
+            <p>• Féminin : Elle est grande / forte / amusante</p>
+        </div>
+
+        <div class="vocabulary-list">
+            <h4>🎯 Vocabulaire à utiliser :</h4>
+            <div class="vocab-grid">
+                <div class="vocab-item">méchant(e)</div>
+                <div class="vocab-item">amusant(e)</div>
+                <div class="vocab-item">grand(e)</div>
+                <div class="vocab-item">fort(e)</div>
+                <div class="vocab-item">timide</div>
+                <div class="vocab-item">petit(e)</div>
+            </div>
+        </div>
+
+        <div class="instruction" data-en="Describe these people using the appropriate adjectives">
+            <strong>Consigne :</strong> Décrivez ces personnes en utilisant les bons adjectifs
+        </div>
+
+        <div id="exercise-container">
+            <div class="question-block">
+                <div class="question-text">1. André fait beaucoup rire la classe</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="0">
+                        Il est amusant
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="1">
+                        Il est méchant
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="2">
+                        Il est timide
+                    </label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">2. Samira ne parle pas</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="0">
+                        Elle est forte
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="1">
+                        Elle est timide
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="2">
+                        Elle est amusante
+                    </label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">3. Léo mesure 1m90</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="0">
+                        Il est petit
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="1">
+                        Il est grand
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="2">
+                        Il est fort
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn" onclick="exercise.checkAnswers()">Vérifier les réponses</button>
+            <button class="btn" onclick="exercise.reset()">Recommencer</button>
+            <button class="btn" onclick="exercise.exportResults()">Exporter résultats</button>
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+        <div id="score" class="score-display" style="display: none;"></div>
+    </div>
+
+    <script>
+        const exerciseConfig = {
+            type: "qcm",
+            title: "Vocabulaire descriptif",
+            subtitle: "Description des personnes",
+            cecr_level: "A2",
+            filename: "a2-vocabulaire-descriptif-qcm.html",
+            content: {
+                questions: [
+                    {
+                        question: "André fait beaucoup rire la classe",
+                        options: ["Il est amusant", "Il est méchant", "Il est timide"],
+                        correct: 0
+                    },
+                    {
+                        question: "Samira ne parle pas", 
+                        options: ["Elle est forte", "Elle est timide", "Elle est amusante"],
+                        correct: 1
+                    },
+                    {
+                        question: "Léo mesure 1m90",
+                        options: ["Il est petit", "Il est grand", "Il est fort"],
+                        correct: 1
+                    }
+                ]
+            }
+        };
+
+        class ExerciseManager {
+            constructor() {
+                this.cecrLevel = exerciseConfig.cecr_level;
+                this.startTime = new Date();
+                this.answers = [];
+                this.completed = false;
+                this.correctAnswers = [0, 1, 1]; // André=amusant, Samira=timide, Léo=grand
+                this.setupEventListeners();
+            }
+
+            setupEventListeners() {
+                const options = document.querySelectorAll('.option');
+                options.forEach(option => {
+                    option.addEventListener('click', () => {
+                        const radio = option.querySelector('input[type="radio"]');
+                        radio.checked = true;
+                        
+                        // Remove selected class from siblings
+                        const siblings = option.parentElement.querySelectorAll('.option');
+                        siblings.forEach(s => s.classList.remove('selected'));
+                        
+                        // Add selected class to clicked option
+                        option.classList.add('selected');
+                    });
+                });
+            }
+
+            checkAnswers() {
+                let correct = 0;
+                const total = this.correctAnswers.length;
+
+                this.correctAnswers.forEach((correctAnswer, index) => {
+                    const questionName = `q${index + 1}`;
+                    const selectedRadio = document.querySelector(`input[name="${questionName}"]:checked`);
+                    const options = document.querySelectorAll(`input[name="${questionName}"]`);
+                    
+                    // Clear previous styling
+                    options.forEach(radio => {
+                        const label = radio.closest('.option');
+                        label.classList.remove('correct', 'incorrect');
+                    });
+
+                    if (selectedRadio) {
+                        const userAnswer = parseInt(selectedRadio.value);
+                        const userOption = selectedRadio.closest('.option');
+                        
+                        if (userAnswer === correctAnswer) {
+                            userOption.classList.add('correct');
+                            correct++;
+                        } else {
+                            userOption.classList.add('incorrect');
+                        }
+                    }
+
+                    // Always show the correct answer
+                    const correctOption = document.querySelector(`input[name="${questionName}"][value="${correctAnswer}"]`);
+                    if (correctOption) {
+                        correctOption.closest('.option').classList.add('correct');
+                    }
+                });
+
+                this.showFeedback(correct, total);
+                this.completed = true;
+            }
+
+            showFeedback(correct, total) {
+                const feedback = document.getElementById('feedback');
+                const score = document.getElementById('score');
+                const percentage = Math.round((correct / total) * 100);
+
+                score.innerHTML = `Score: ${correct}/${total} (${percentage}%)`;
+                score.style.display = 'block';
+
+                if (correct === total) {
+                    feedback.className = 'feedback success';
+                    feedback.innerHTML = '✅ Parfait ! Vous maîtrisez le vocabulaire descriptif et l\'accord des adjectifs.';
+                } else if (correct >= 2) {
+                    feedback.className = 'feedback success';
+                    feedback.innerHTML = '✅ Très bien ! Pensez à l\'accord des adjectifs (masculin/féminin).';
+                } else {
+                    feedback.className = 'feedback error';
+                    feedback.innerHTML = '❌ Révisez le vocabulaire descriptif. Pensez au contexte de chaque situation.';
+                }
+                
+                feedback.style.display = 'block';
+            }
+
+            reset() {
+                const radios = document.querySelectorAll('input[type="radio"]');
+                const options = document.querySelectorAll('.option');
+                
+                radios.forEach(radio => radio.checked = false);
+                options.forEach(option => {
+                    option.classList.remove('selected', 'correct', 'incorrect');
+                });
+
+                document.getElementById('feedback').style.display = 'none';
+                document.getElementById('score').style.display = 'none';
+                this.completed = false;
+                this.startTime = new Date();
+            }
+
+            exportResults() {
+                if (!this.completed) {
+                    alert('Veuillez d\'abord compléter l\'exercice.');
+                    return;
+                }
+
+                const endTime = new Date();
+                const duration = Math.round((endTime - this.startTime) / 1000);
+                let correct = 0;
+
+                // Count correct answers
+                this.correctAnswers.forEach((correctAnswer, index) => {
+                    const questionName = `q${index + 1}`;
+                    const selectedRadio = document.querySelector(`input[name="${questionName}"]:checked`);
+                    if (selectedRadio && parseInt(selectedRadio.value) === correctAnswer) {
+                        correct++;
+                    }
+                });
+
+                const percentage = Math.round((correct / this.correctAnswers.length) * 100);
+
+                const markdown = `# 📚 Résultats FLE - A2 - VOCABULAIRE
+
+**Niveau CECR :** A2  
+**Date :** ${new Date().toLocaleDateString('fr-FR')}  
+**Exercice :** Vocabulaire descriptif  
+
+---
+
+## 📊 Performance
+- **Score final :** ${correct}/${this.correctAnswers.length} (${percentage}%)
+- **Temps passé :** ⏱️ ${Math.floor(duration/60)}min${duration%60}s
+
+---
+
+## 📝 Détail des réponses
+1. André (fait rire) → Réponse: amusant ✅
+2. Samira (ne parle pas) → Réponse: timide ✅  
+3. Léo (mesure 1m90) → Réponse: grand ✅
+
+---
+
+*Exercice FLE généré automatiquement*`;
+
+                const blob = new Blob([markdown], { type: 'text/markdown' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `fle-vocabulaire-descriptif-${new Date().toISOString().split('T')[0]}.md`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        const exercise = new ExerciseManager();
+    </script>
+</body>
+</html>

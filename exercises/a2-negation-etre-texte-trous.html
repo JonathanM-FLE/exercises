@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La forme négative avec "être" - A2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background-color: #F7F3F0;
+            color: #2F2F2F;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+        }
+
+        .cecr-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #FFF8DC;
+            color: #2F2F2F;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            border: 2px solid #CC785C;
+        }
+
+        h1 {
+            color: #CC785C;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .example-box {
+            background: #E5E5E5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #CC785C;
+        }
+
+        .example-box h3 {
+            color: #CC785C;
+            margin-bottom: 10px;
+        }
+
+        .instruction {
+            position: relative;
+            cursor: help;
+        }
+
+        .instruction:hover::after {
+            content: attr(data-en);
+            position: absolute;
+            background: #2F2F2F;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            bottom: 100%;
+            left: 0;
+            margin-bottom: 5px;
+        }
+
+        .exercise-item {
+            background: #F9F9F9;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            border: 1px solid #E5E5E5;
+        }
+
+        .input-box {
+            background: white;
+            border: 2px solid #E5E5E5;
+            border-radius: 4px;
+            padding: 8px;
+            margin: 0 5px;
+            min-width: 120px;
+            display: inline-block;
+            transition: border-color 0.3s;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: #CC785C;
+        }
+
+        .input-box.correct {
+            border-color: #4A8B3A;
+            background: #E8F5E8;
+        }
+
+        .input-box.incorrect {
+            border-color: #C53030;
+            background: #FFE6E6;
+        }
+
+        .btn {
+            background: #CC785C;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background: #B86A4E;
+        }
+
+        .btn:disabled {
+            background: #E5E5E5;
+            cursor: not-allowed;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .feedback.success {
+            background: #E8F5E8;
+            color: #4A8B3A;
+            border: 1px solid #4A8B3A;
+        }
+
+        .feedback.error {
+            background: #FFE6E6;
+            color: #C53030;
+            border: 1px solid #C53030;
+        }
+
+        .actions {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .score-display {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cecr-badge">A2</div>
+        
+        <h1>La forme négative avec "être"</h1>
+        <p class="subtitle">Grammaire française - Niveau A2</p>
+        
+        <div class="example-box">
+            <h3>📚 Rappel</h3>
+            <p><strong>Forme affirmative :</strong> Je suis content.</p>
+            <p><strong>Forme négative :</strong> Je ne suis pas content.</p>
+            <p><em>Structure : sujet + ne + verbe être + pas + adjectif</em></p>
+        </div>
+
+        <div class="instruction" data-en="Transform these sentences into the negative form">
+            <strong>Consigne :</strong> Transformez ces phrases à la forme négative
+        </div>
+
+        <div id="exercise-container">
+            <div class="exercise-item">
+                <p>1. Je suis content. → 
+                <input type="text" class="input-box" data-answer="je ne suis pas content" placeholder="Votre réponse">
+                </p>
+            </div>
+
+            <div class="exercise-item">
+                <p>2. Nous sommes fatigués. → 
+                <input type="text" class="input-box" data-answer="nous ne sommes pas fatigués" placeholder="Votre réponse">
+                </p>
+            </div>
+
+            <div class="exercise-item">
+                <p>3. Elle est forte. → 
+                <input type="text" class="input-box" data-answer="elle n'est pas forte" placeholder="Votre réponse">
+                </p>
+            </div>
+
+            <div class="exercise-item">
+                <p>4. Ils sont amusants. → 
+                <input type="text" class="input-box" data-answer="ils ne sont pas amusants" placeholder="Votre réponse">
+                </p>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn" onclick="exercise.checkAnswers()">Vérifier les réponses</button>
+            <button class="btn" onclick="exercise.reset()">Recommencer</button>
+            <button class="btn" onclick="exercise.exportResults()">Exporter résultats</button>
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+        <div id="score" class="score-display" style="display: none;"></div>
+    </div>
+
+    <script>
+        const exerciseConfig = {
+            type: "texte_trous",
+            title: "La forme négative avec être",
+            subtitle: "Grammaire française",
+            cecr_level: "A2",
+            filename: "a2-negation-etre-texte-trous.html",
+            content: {
+                question: "Transformez ces phrases à la forme négative",
+                question_en: "Transform these sentences into the negative form",
+                answers: [
+                    "je ne suis pas content",
+                    "nous ne sommes pas fatigués", 
+                    "elle n'est pas forte",
+                    "ils ne sont pas amusants"
+                ]
+            }
+        };
+
+        class ExerciseManager {
+            constructor() {
+                this.cecrLevel = exerciseConfig.cecr_level;
+                this.startTime = new Date();
+                this.answers = [];
+                this.completed = false;
+            }
+
+            checkAnswers() {
+                const inputs = document.querySelectorAll('.input-box');
+                let correct = 0;
+                const total = inputs.length;
+
+                inputs.forEach((input, index) => {
+                    const userAnswer = input.value.toLowerCase().trim();
+                    const correctAnswer = input.dataset.answer.toLowerCase();
+                    
+                    if (userAnswer === correctAnswer) {
+                        input.classList.remove('incorrect');
+                        input.classList.add('correct');
+                        correct++;
+                    } else {
+                        input.classList.remove('correct');
+                        input.classList.add('incorrect');
+                    }
+                });
+
+                this.showFeedback(correct, total);
+                this.completed = true;
+            }
+
+            showFeedback(correct, total) {
+                const feedback = document.getElementById('feedback');
+                const score = document.getElementById('score');
+                const percentage = Math.round((correct / total) * 100);
+
+                score.innerHTML = `Score: ${correct}/${total} (${percentage}%)`;
+                score.style.display = 'block';
+
+                if (correct === total) {
+                    feedback.className = 'feedback success';
+                    feedback.innerHTML = '✅ Parfait ! Vous maîtrisez la forme négative avec "être".';
+                } else if (correct >= total * 0.7) {
+                    feedback.className = 'feedback success';
+                    feedback.innerHTML = '✅ Très bien ! Quelques erreurs mineures à corriger.';
+                } else {
+                    feedback.className = 'feedback error';
+                    feedback.innerHTML = '❌ Continuez à vous entraîner. Rappelez-vous : ne + verbe + pas';
+                }
+                
+                feedback.style.display = 'block';
+            }
+
+            reset() {
+                const inputs = document.querySelectorAll('.input-box');
+                inputs.forEach(input => {
+                    input.value = '';
+                    input.className = 'input-box';
+                });
+
+                document.getElementById('feedback').style.display = 'none';
+                document.getElementById('score').style.display = 'none';
+                this.completed = false;
+                this.startTime = new Date();
+            }
+
+            exportResults() {
+                if (!this.completed) {
+                    alert('Veuillez d\'abord compléter l\'exercice.');
+                    return;
+                }
+
+                const endTime = new Date();
+                const duration = Math.round((endTime - this.startTime) / 1000);
+                const inputs = document.querySelectorAll('.input-box');
+                let correct = 0;
+
+                inputs.forEach(input => {
+                    if (input.classList.contains('correct')) correct++;
+                });
+
+                const percentage = Math.round((correct / inputs.length) * 100);
+
+                const markdown = `# 📚 Résultats FLE - A2 - NEGATION
+
+**Niveau CECR :** A2  
+**Date :** ${new Date().toLocaleDateString('fr-FR')}  
+**Exercice :** La forme négative avec "être"  
+
+---
+
+## 📊 Performance
+- **Score final :** ${correct}/${inputs.length} (${percentage}%)
+- **Temps passé :** ⏱️ ${Math.floor(duration/60)}min${duration%60}s
+
+---
+
+## 📝 Détail des réponses
+1. Je suis content → ${inputs[0].value || "Non répondu"}
+2. Nous sommes fatigués → ${inputs[1].value || "Non répondu"}
+3. Elle est forte → ${inputs[2].value || "Non répondu"}
+4. Ils sont amusants → ${inputs[3].value || "Non répondu"}
+
+---
+
+*Exercice FLE généré automatiquement*`;
+
+                const blob = new Blob([markdown], { type: 'text/markdown' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `fle-negation-etre-${new Date().toISOString().split('T')[0]}.md`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        const exercise = new ExerciseManager();
+    </script>
+</body>
+</html>

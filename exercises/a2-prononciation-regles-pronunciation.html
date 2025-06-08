@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Règles de prononciation - A2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background-color: #F7F3F0;
+            color: #2F2F2F;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+        }
+
+        .cecr-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #FFF8DC;
+            color: #2F2F2F;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            border: 2px solid #CC785C;
+        }
+
+        h1 {
+            color: #CC785C;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .example-box {
+            background: #E5E5E5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #CC785C;
+        }
+
+        .example-box h3 {
+            color: #CC785C;
+            margin-bottom: 10px;
+        }
+
+        .instruction {
+            position: relative;
+            cursor: help;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .instruction:hover::after {
+            content: attr(data-en);
+            position: absolute;
+            background: #2F2F2F;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            bottom: 100%;
+            left: 0;
+            margin-bottom: 5px;
+        }
+
+        .rules-section {
+            background: #F0F8FF;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 2px solid #CC785C;
+        }
+
+        .rule-item {
+            background: white;
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #4A8B3A;
+        }
+
+        .rule-title {
+            color: #CC785C;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .rule-examples {
+            background: #FFF8DC;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-family: monospace;
+        }
+
+        .pronunciation-text {
+            font-size: 24px;
+            text-align: center;
+            padding: 20px;
+            background: #F9F9F9;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #E5E5E5;
+            font-weight: bold;
+        }
+
+        .phonetic {
+            color: #666;
+            font-style: italic;
+            text-align: center;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .audio-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+            padding: 20px;
+            background: #F8F8F8;
+            border-radius: 8px;
+        }
+
+        .control-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            background: #CC785C;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: #B86A4E;
+        }
+
+        .btn:disabled {
+            background: #E5E5E5;
+            cursor: not-allowed;
+        }
+
+        .btn.recording {
+            background: #C53030;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .record-status {
+            display: none;
+            color: #C53030;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .record-status.recording {
+            display: block;
+        }
+
+        .audio-actions {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .audio-actions.visible {
+            display: block;
+        }
+
+        .teacher-email {
+            background: #E8F5E8;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border: 1px solid #4A8B3A;
+        }
+
+        .teacher-email h4 {
+            color: #4A8B3A;
+            margin-bottom: 8px;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .feedback.success {
+            background: #E8F5E8;
+            color: #4A8B3A;
+            border: 1px solid #4A8B3A;
+        }
+
+        .feedback.error {
+            background: #FFE6E6;
+            color: #C53030;
+            border: 1px solid #C53030;
+        }
+
+        .actions {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        audio {
+            border-radius: 6px;
+        }
+
+        .highlight {
+            background: yellow;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cecr-badge">A2</div>
+        
+        <h1>Règles de prononciation</h1>
+        <p class="subtitle">Phonétique française - Niveau A2</p>
+        
+        <div class="example-box">
+            <h3>📚 Objectif</h3>
+            <p>Lire les réponses des exercices précédents en appliquant les règles de prononciation française. Enregistrez-vous et envoyez votre audio à votre professeur.</p>
+        </div>
+
+        <div class="rules-section">
+            <h3 style="color: #CC785C; margin-bottom: 15px;">🔊 Règles à appliquer</h3>
+            
+            <div class="rule-item">
+                <div class="rule-title">Règle 1: Le son "Z" après les voyelles</div>
+                <p><strong>Quand utiliser :</strong> Après "ils", "elles", "nous", "vous" + voyelle</p>
+                <div class="rule-examples">
+                    <p>• <span class="highlight">Ils</span> aiment → Ils <strong>Z</strong>aiment</p>
+                    <p>• <span class="highlight">Nous</span> arrivons → Nous <strong>Z</strong>arrivons</p>
+                    <p>• <span class="highlight">Elles</span> ont → Elles <strong>Z</strong>ont</p>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-title">Règle 2: Le "-e" final muet</div>
+                <p><strong>Comment faire :</strong> Connecter le "-e" muet avec la voyelle suivante</p>
+                <div class="rule-examples">
+                    <p>• Elle imagine → Ell<strong>e-i</strong>magine</p>
+                    <p>• Une belle autruche → bell<strong>e-au</strong>truche</p>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-title">Règle 3: Lettres muettes dans "méchant"</div>
+                <p><strong>Pronunciation :</strong> Méchant = "Méshan" (le "t" est muet)</p>
+                <div class="rule-examples">
+                    <p>• méchant → [mé-<strong>shan</strong>]</p>
+                    <p>• méchante → [mé-<strong>shant</strong>]</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="instruction" data-en="Record yourself reading your answers from the previous exercises">
+            <strong>Consigne :</strong> Enregistrez-vous en lisant vos réponses des exercices précédents
+        </div>
+
+        <div class="pronunciation-text">
+            "Je ne suis pas content. Nous ne sommes pas fatigués. 
+            Elle n'est pas forte. Ils ne sont pas amusants.
+            Il est amusant. Elle est timide. Il est grand."
+        </div>
+
+        <div class="phonetic">
+            [zhuh nuh swee pah kon-tahn. noo nuh som pah fah-tee-gay.
+            ell nay pah fort. eel nuh son pah ah-moo-zahn.
+            eel ay tah-moo-zahn. ell ay tee-meed. eel ay grahn.]
+        </div>
+
+        <div class="audio-controls">
+            <div class="control-row">
+                <button class="btn" onclick="exercise.requestMicrophonePermission()">
+                    🎤 Demander l'accès au micro
+                </button>
+                <button class="btn" id="recordBtn" onclick="exercise.startRecording()" disabled>
+                    🔴 Commencer l'enregistrement
+                </button>
+                <button class="btn" id="stopBtn" onclick="exercise.stopRecording()" disabled>
+                    ⏹️ Arrêter l'enregistrement
+                </button>
+            </div>
+            
+            <div class="record-status" id="recordStatus">
+                🔴 Enregistrement en cours... Lisez le texte à voix haute
+            </div>
+            
+            <audio id="playback" controls style="display: none;">
+                Votre navigateur ne supporte pas l'audio.
+            </audio>
+        </div>
+
+        <div class="audio-actions" id="audioActions">
+            <button class="btn" onclick="exercise.sendAudioEmail()">
+                📧 Envoyer l'enregistrement
+            </button>
+            <button class="btn" onclick="exercise.downloadAudio()">
+                💾 Télécharger l'audio
+            </button>
+        </div>
+
+        <div class="teacher-email">
+            <h4>📧 Information</h4>
+            <p>Votre enregistrement sera envoyé à : <strong>prof@exemple.com</strong></p>
+            <p>Vous pouvez aussi télécharger le fichier audio pour l'envoyer manuellement.</p>
+        </div>
+
+        <div class="actions">
+            <button class="btn" onclick="exercise.reset()">Recommencer</button>
+            <button class="btn" onclick="exercise.exportResults()">Exporter résultats</button>
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+    </div>
+
+    <script>
+        const exerciseConfig = {
+            type: "pronunciation",
+            title: "Règles de prononciation",
+            subtitle: "Phonétique française",
+            cecr_level: "A2",
+            filename: "a2-prononciation-regles-pronunciation.html",
+            content: {
+                text_to_read: "Je ne suis pas content. Nous ne sommes pas fatigués. Elle n'est pas forte. Ils ne sont pas amusants. Il est amusant. Elle est timide. Il est grand.",
+                text_to_read_en: "I am not happy. We are not tired. She is not strong. They are not funny. He is funny. She is shy. He is tall.",
+                example: "Écoutez les règles, puis enregistrez-vous",
+                phonetic: "[zhuh nuh swee pah kon-tahn. noo nuh som pah fah-tee-gay. ell nay pah fort. eel nuh son pah ah-moo-zahn. eel ay tah-moo-zahn. ell ay tee-meed. eel ay grahn.]",
+                teacher_email: "prof@exemple.com"
+            }
+        };
+
+        class ExerciseManager {
+            constructor() {
+                this.cecrLevel = exerciseConfig.cecr_level;
+                this.startTime = new Date();
+                this.audioRecorder = null;
+                this.recordedAudio = null;
+                this.stream = null;
+                this.isRecording = false;
+                this.hasPermission = false;
+            }
+
+            async requestMicrophonePermission() {
+                try {
+                    this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    this.hasPermission = true;
+                    
+                    // Enable record button
+                    document.getElementById('recordBtn').disabled = false;
+                    
+                    this.showFeedback('✅ Accès au microphone accordé ! Vous pouvez maintenant enregistrer.', 'success');
+                    
+                    // Setup MediaRecorder
+                    this.setupMediaRecorder();
+                    
+                } catch (error) {
+                    console.error('Erreur d\'accès au microphone:', error);
+                    this.showFeedback('❌ Impossible d\'accéder au microphone. Vérifiez les autorisations de votre navigateur.', 'error');
+                }
+            }
+
+            setupMediaRecorder() {
+                if (!this.stream) return;
+
+                try {
+                    // Try different MIME types for better compatibility
+                    let mimeType = 'audio/webm';
+                    if (!MediaRecorder.isTypeSupported(mimeType)) {
+                        mimeType = 'audio/ogg';
+                    }
+                    if (!MediaRecorder.isTypeSupported(mimeType)) {
+                        mimeType = 'audio/wav';
+                    }
+
+                    this.audioRecorder = new MediaRecorder(this.stream, {
+                        mimeType: mimeType,
+                        audioBitsPerSecond: 128000
+                    });
+
+                    const audioChunks = [];
+
+                    this.audioRecorder.addEventListener('dataavailable', event => {
+                        audioChunks.push(event.data);
+                    });
+
+                    this.audioRecorder.addEventListener('stop', () => {
+                        const audioBlob = new Blob(audioChunks, { type: mimeType });
+                        this.recordedAudio = audioBlob;
+                        
+                        // Create audio URL for playback
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        const playback = document.getElementById('playback');
+                        playback.src = audioUrl;
+                        playback.style.display = 'block';
+                        
+                        // Show audio actions
+                        document.getElementById('audioActions').classList.add('visible');
+                        
+                        this.showFeedback('✅ Enregistrement terminé ! Vous pouvez l\'écouter et l\'envoyer.', 'success');
+                    });
+
+                } catch (error) {
+                    console.error('Erreur MediaRecorder:', error);
+                    this.showFeedback('❌ Erreur lors de la configuration de l\'enregistreur.', 'error');
+                }
+            }
+
+            startRecording() {
+                if (!this.audioRecorder || !this.hasPermission) {
+                    this.showFeedback('❌ Veuillez d\'abord demander l\'accès au microphone.', 'error');
+                    return;
+                }
+
+                try {
+                    this.audioRecorder.start();
+                    this.isRecording = true;
+                    
+                    // Update UI
+                    document.getElementById('recordBtn').disabled = true;
+                    document.getElementById('stopBtn').disabled = false;
+                    document.getElementById('recordStatus').classList.add('recording');
+                    
+                    // Hide previous audio if any
+                    document.getElementById('playback').style.display = 'none';
+                    document.getElementById('audioActions').classList.remove('visible');
+                    
+                    this.showFeedback('🎤 Enregistrement démarré ! Lisez le texte clairement.', 'success');
+                    
+                } catch (error) {
+                    console.error('Erreur lors du démarrage:', error);
+                    this.showFeedback('❌ Erreur lors du démarrage de l\'enregistrement.', 'error');
+                }
+            }
+
+            stopRecording() {
+                if (!this.audioRecorder || !this.isRecording) return;
+
+                try {
+                    this.audioRecorder.stop();
+                    this.isRecording = false;
+                    
+                    // Update UI
+                    document.getElementById('recordBtn').disabled = false;
+                    document.getElementById('stopBtn').disabled = true;
+                    document.getElementById('recordStatus').classList.remove('recording');
+                    
+                } catch (error) {
+                    console.error('Erreur lors de l\'arrêt:', error);
+                    this.showFeedback('❌ Erreur lors de l\'arrêt de l\'enregistrement.', 'error');
+                }
+            }
+
+            async sendAudioEmail() {
+                if (!this.recordedAudio) {
+                    this.showFeedback('❌ Aucun enregistrement disponible.', 'error');
+                    return;
+                }
+
+                try {
+                    // Convert blob to base64
+                    const base64Audio = await this.blobToBase64(this.recordedAudio);
+                    
+                    // Create email content
+                    const subject = encodeURIComponent('Exercice de prononciation - A2');
+                    const body = encodeURIComponent(`Bonjour,
+
+Voici mon enregistrement pour l'exercice de prononciation A2.
+
+Exercice: Règles de prononciation française
+Niveau: A2
+Date: ${new Date().toLocaleDateString('fr-FR')}
+
+Texte lu:
+"${exerciseConfig.content.text_to_read}"
+
+Cordialement,
+[Votre nom]
+
+--- 
+Note: L'audio est en pièce jointe (fichier audio enregistré)`);
+
+                    // Try to open email client
+                    const mailtoLink = `mailto:${exerciseConfig.content.teacher_email}?subject=${subject}&body=${body}`;
+                    
+                    // For better UX, we'll also provide download option
+                    this.downloadAudio();
+                    
+                    window.open(mailtoLink);
+                    
+                    this.showFeedback('📧 Client email ouvert ! Le fichier audio a été téléchargé - ajoutez-le en pièce jointe.', 'success');
+                    
+                } catch (error) {
+                    console.error('Erreur email:', error);
+                    this.showFeedback('❌ Erreur lors de l\'envoi. Essayez de télécharger le fichier.', 'error');
+                }
+            }
+
+            downloadAudio() {
+                if (!this.recordedAudio) {
+                    this.showFeedback('❌ Aucun enregistrement disponible.', 'error');
+                    return;
+                }
+
+                const url = URL.createObjectURL(this.recordedAudio);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `prononciation-a2-${new Date().toISOString().split('T')[0]}.webm`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                this.showFeedback('💾 Fichier audio téléchargé !', 'success');
+            }
+
+            async blobToBase64(blob) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result.split(',')[1]);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob);
+                });
+            }
+
+            showFeedback(message, type) {
+                const feedback = document.getElementById('feedback');
+                feedback.className = `feedback ${type}`;
+                feedback.innerHTML = message;
+                feedback.style.display = 'block';
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 5000);
+            }
+
+            reset() {
+                // Stop recording if active
+                if (this.isRecording) {
+                    this.stopRecording();
+                }
+                
+                // Reset UI
+                document.getElementById('recordBtn').disabled = !this.hasPermission;
+                document.getElementById('stopBtn').disabled = true;
+                document.getElementById('recordStatus').classList.remove('recording');
+                document.getElementById('playback').style.display = 'none';
+                document.getElementById('audioActions').classList.remove('visible');
+                document.getElementById('feedback').style.display = 'none';
+                
+                // Clear recorded audio
+                this.recordedAudio = null;
+                this.startTime = new Date();
+            }
+
+            exportResults() {
+                const endTime = new Date();
+                const duration = Math.round((endTime - this.startTime) / 1000);
+                const hasRecording = this.recordedAudio ? 'Oui' : 'Non';
+
+                const markdown = `# 📚 Résultats FLE - A2 - PRONONCIATION
+
+**Niveau CECR :** A2  
+**Date :** ${new Date().toLocaleDateString('fr-FR')}  
+**Exercice :** Règles de prononciation française  
+
+---
+
+## 📊 Performance
+- **Enregistrement réalisé :** ${hasRecording}
+- **Temps passé :** ⏱️ ${Math.floor(duration/60)}min${duration%60}s
+
+---
+
+## 📝 Détail de l'exercice
+**Texte lu :**
+"${exerciseConfig.content.text_to_read}"
+
+**Règles appliquées :**
+1. Son "Z" après voyelles (ils_aiment, nous_arrivons)
+2. Liaison avec "-e" muet (elle_imagine)  
+3. Lettres muettes dans "méchant" = [méshan]
+
+**Audio :** ${hasRecording === 'Oui' ? 'Fichier audio enregistré et téléchargé' : 'Aucun enregistrement'}
+
+---
+
+*Exercice FLE généré automatiquement*`;
+
+                const blob = new Blob([markdown], { type: 'text/markdown' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `fle-prononciation-regles-${new Date().toISOString().split('T')[0]}.md`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        const exercise = new ExerciseManager();
+
+        // Cleanup function
+        window.addEventListener('beforeunload', () => {
+            if (exercise.stream) {
+                exercise.stream.getTracks().forEach(track => track.stop());
+            }
+        });
+    </script>
+</body>
+</html>

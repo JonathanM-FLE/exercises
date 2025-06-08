@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correction d'erreurs - A2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background-color: #F7F3F0;
+            color: #2F2F2F;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+        }
+
+        .cecr-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #FFF8DC;
+            color: #2F2F2F;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            border: 2px solid #CC785C;
+        }
+
+        h1 {
+            color: #CC785C;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .example-box {
+            background: #E5E5E5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #CC785C;
+        }
+
+        .example-box h3 {
+            color: #CC785C;
+            margin-bottom: 10px;
+        }
+
+        .instruction {
+            position: relative;
+            cursor: help;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .instruction:hover::after {
+            content: attr(data-en);
+            position: absolute;
+            background: #2F2F2F;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            bottom: 100%;
+            left: 0;
+            margin-bottom: 5px;
+        }
+
+        .sentence-block {
+            background: #F9F9F9;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 1px solid #E5E5E5;
+        }
+
+        .sentence-text {
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border: 2px solid #E5E5E5;
+            font-family: monospace;
+        }
+
+        .sentence-text.correct {
+            border-color: #4A8B3A;
+            background: #E8F5E8;
+        }
+
+        .sentence-text.incorrect {
+            border-color: #C53030;
+            background: #FFE6E6;
+        }
+
+        .choice-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .choice-btn {
+            background: white;
+            border: 2px solid #E5E5E5;
+            border-radius: 6px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        .choice-btn:hover {
+            border-color: #CC785C;
+            background: #FFF8DC;
+        }
+
+        .choice-btn.selected {
+            border-color: #CC785C;
+            background: #FFF8DC;
+        }
+
+        .choice-btn.correct {
+            border-color: #4A8B3A;
+            background: #E8F5E8;
+            color: #4A8B3A;
+        }
+
+        .choice-btn.incorrect {
+            border-color: #C53030;
+            background: #FFE6E6;
+            color: #C53030;
+        }
+
+        .btn {
+            background: #CC785C;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background: #B86A4E;
+        }
+
+        .btn:disabled {
+            background: #E5E5E5;
+            cursor: not-allowed;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .feedback.success {
+            background: #E8F5E8;
+            color: #4A8B3A;
+            border: 1px solid #4A8B3A;
+        }
+
+        .feedback.error {
+            background: #FFE6E6;
+            color: #C53030;
+            border: 1px solid #C53030;
+        }
+
+        .actions {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .score-display {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .correction-display {
+            margin-top: 15px;
+            padding: 15px;
+            background: #E8F5E8;
+            border-radius: 6px;
+            border-left: 4px solid #4A8B3A;
+            display: none;
+        }
+
+        .correction-display h4 {
+            color: #4A8B3A;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cecr-badge">A2</div>
+        
+        <h1>Correction d'erreurs</h1>
+        <p class="subtitle">Grammaire et orthographe française - Niveau A2</p>
+        
+        <div class="example-box">
+            <h3>📚 Rappel</h3>
+            <p><strong>Erreurs courantes à repérer :</strong></p>
+            <p>• Négation : "Je ne suis pas malade" (pas "Je suis pas malade")</p>
+            <p>• Articles : "J'ai maths" → "J'ai cours de maths"</p>
+            <p>• Orthographe : "beau-père" (avec trait d'union)</p>
+        </div>
+
+        <div class="instruction" data-en="Find and correct the errors in these sentences">
+            <strong>Consigne :</strong> Trouvez et corrigez les erreurs dans ces phrases
+        </div>
+
+        <div id="exercise-container">
+            <div class="sentence-block">
+                <div class="sentence-text">Je suis pas malade.</div>
+                <div class="choice-buttons">
+                    <button class="choice-btn" data-answer="correct">✅ Correcte</button>
+                    <button class="choice-btn" data-answer="incorrect">❌ Incorrecte</button>
+                </div>
+                <div class="correction-display">
+                    <h4>✏️ Correction :</h4>
+                    <p><strong>Je ne suis pas malade.</strong></p>
+                    <p><em>Il faut utiliser "ne...pas" pour la négation.</em></p>
+                </div>
+            </div>
+
+            <div class="sentence-block">
+                <div class="sentence-text">Mon beau père est strict.</div>
+                <div class="choice-buttons">
+                    <button class="choice-btn" data-answer="correct">✅ Correcte</button>
+                    <button class="choice-btn" data-answer="incorrect">❌ Incorrecte</button>
+                </div>
+                <div class="correction-display">
+                    <h4>✏️ Correction :</h4>
+                    <p><strong>Mon beau-père est strict.</strong></p>
+                    <p><em>"Beau-père" s'écrit avec un trait d'union.</em></p>
+                </div>
+            </div>
+
+            <div class="sentence-block">
+                <div class="sentence-text">J'ai maths à 9h.</div>
+                <div class="choice-buttons">
+                    <button class="choice-btn" data-answer="correct">✅ Correcte</button>
+                    <button class="choice-btn" data-answer="incorrect">❌ Incorrecte</button>
+                </div>
+                <div class="correction-display">
+                    <h4>✏️ Correction :</h4>
+                    <p><strong>J'ai cours de maths à 9h.</strong> ou <strong>J'ai mathématiques à 9h.</strong></p>
+                    <p><em>Il faut dire "cours de maths" ou utiliser le nom complet.</em></p>
+                </div>
+            </div>
+
+            <div class="sentence-block">
+                <div class="sentence-text">Je déteste l'informatique parce que le professeur est strict.</div>
+                <div class="choice-buttons">
+                    <button class="choice-btn" data-answer="correct">✅ Correcte</button>
+                    <button class="choice-btn" data-answer="incorrect">❌ Incorrecte</button>
+                </div>
+                <div class="correction-display">
+                    <h4>✅ Cette phrase est correcte !</h4>
+                    <p><em>Grammaire, orthographe et syntaxe parfaites.</em></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn" onclick="exercise.checkAnswers()">Vérifier les réponses</button>
+            <button class="btn" onclick="exercise.reset()">Recommencer</button>
+            <button class="btn" onclick="exercise.exportResults()">Exporter résultats</button>
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+        <div id="score" class="score-display" style="display: none;"></div>
+    </div>
+
+    <script>
+        const exerciseConfig = {
+            type: "vrai_faux",
+            title: "Correction d'erreurs",
+            subtitle: "Grammaire et orthographe française",
+            cecr_level: "A2",
+            filename: "a2-correction-erreurs-vrai-faux.html",
+            content: {
+                sentences: [
+                    {
+                        text: "Je suis pas malade.",
+                        correct: false, // incorrect sentence
+                        correction: "Je ne suis pas malade."
+                    },
+                    {
+                        text: "Mon beau père est strict.",
+                        correct: false, // incorrect sentence  
+                        correction: "Mon beau-père est strict."
+                    },
+                    {
+                        text: "J'ai maths à 9h.",
+                        correct: false, // incorrect sentence
+                        correction: "J'ai cours de maths à 9h."
+                    },
+                    {
+                        text: "Je déteste l'informatique parce que le professeur est strict.",
+                        correct: true // correct sentence
+                    }
+                ]
+            }
+        };
+
+        class ExerciseManager {
+            constructor() {
+                this.cecrLevel = exerciseConfig.cecr_level;
+                this.startTime = new Date();
+                this.answers = [];
+                this.completed = false;
+                this.correctAnswers = [false, false, false, true]; // incorrect, incorrect, incorrect, correct
+                this.setupEventListeners();
+            }
+
+            setupEventListeners() {
+                const choiceButtons = document.querySelectorAll('.choice-btn');
+                choiceButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Remove selected class from siblings
+                        const siblings = button.parentElement.querySelectorAll('.choice-btn');
+                        siblings.forEach(s => s.classList.remove('selected'));
+                        
+                        // Add selected class to clicked button
+                        button.classList.add('selected');
+                    });
+                });
+            }
+
+            checkAnswers() {
+                let correct = 0;
+                const total = this.correctAnswers.length;
+                const sentenceBlocks = document.querySelectorAll('.sentence-block');
+
+                this.correctAnswers.forEach((isCorrectSentence, index) => {
+                    const block = sentenceBlocks[index];
+                    const buttons = block.querySelectorAll('.choice-btn');
+                    const selectedButton = block.querySelector('.choice-btn.selected');
+                    const correctionDisplay = block.querySelector('.correction-display');
+                    const sentenceText = block.querySelector('.sentence-text');
+                    
+                    // Clear previous styling
+                    buttons.forEach(btn => {
+                        btn.classList.remove('correct', 'incorrect');
+                    });
+                    sentenceText.classList.remove('correct', 'incorrect');
+
+                    if (selectedButton) {
+                        const userChoice = selectedButton.dataset.answer;
+                        const correctChoice = isCorrectSentence ? 'correct' : 'incorrect';
+                        
+                        if (userChoice === correctChoice) {
+                            selectedButton.classList.add('correct');
+                            sentenceText.classList.add('correct');
+                            correct++;
+                        } else {
+                            selectedButton.classList.add('incorrect');
+                            sentenceText.classList.add('incorrect');
+                        }
+                    }
+
+                    // Show correction for all sentences
+                    correctionDisplay.style.display = 'block';
+                });
+
+                this.showFeedback(correct, total);
+                this.completed = true;
+            }
+
+            showFeedback(correct, total) {
+                const feedback = document.getElementById('feedback');
+                const score = document.getElementById('score');
+                const percentage = Math.round((correct / total) * 100);
+
+                score.innerHTML = `Score: ${correct}/${total} (${percentage}%)`;
+                score.style.display = 'block';
+
+                if (correct === total) {
+                    feedback.className = 'feedback success';
+                    feedback.innerHTML = '✅ Excellent ! Vous savez repérer les erreurs de grammaire et d\'orthographe.';
+                } else if (correct >= 3) {
+                    feedback.className = 'feedback success';
+                    feedback.innerHTML = '✅ Très bien ! Continuez à faire attention aux détails.';
+                } else {
+                    feedback.className = 'feedback error';
+                    feedback.innerHTML = '❌ Révisez les règles de grammaire et d\'orthographe. Attention à la négation et aux traits d\'union.';
+                }
+                
+                feedback.style.display = 'block';
+            }
+
+            reset() {
+                const buttons = document.querySelectorAll('.choice-btn');
+                const sentenceTexts = document.querySelectorAll('.sentence-text');
+                const corrections = document.querySelectorAll('.correction-display');
+                
+                buttons.forEach(button => {
+                    button.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                sentenceTexts.forEach(text => {
+                    text.classList.remove('correct', 'incorrect');
+                });
+
+                corrections.forEach(correction => {
+                    correction.style.display = 'none';
+                });
+
+                document.getElementById('feedback').style.display = 'none';
+                document.getElementById('score').style.display = 'none';
+                this.completed = false;
+                this.startTime = new Date();
+            }
+
+            exportResults() {
+                if (!this.completed) {
+                    alert('Veuillez d\'abord compléter l\'exercice.');
+                    return;
+                }
+
+                const endTime = new Date();
+                const duration = Math.round((endTime - this.startTime) / 1000);
+                let correct = 0;
+
+                // Count correct answers
+                this.correctAnswers.forEach((isCorrectSentence, index) => {
+                    const block = document.querySelectorAll('.sentence-block')[index];
+                    const selectedButton = block.querySelector('.choice-btn.selected');
+                    
+                    if (selectedButton) {
+                        const userChoice = selectedButton.dataset.answer;
+                        const correctChoice = isCorrectSentence ? 'correct' : 'incorrect';
+                        if (userChoice === correctChoice) correct++;
+                    }
+                });
+
+                const percentage = Math.round((correct / this.correctAnswers.length) * 100);
+
+                const markdown = `# 📚 Résultats FLE - A2 - CORRECTION
+
+**Niveau CECR :** A2  
+**Date :** ${new Date().toLocaleDateString('fr-FR')}  
+**Exercice :** Correction d'erreurs  
+
+---
+
+## 📊 Performance
+- **Score final :** ${correct}/${this.correctAnswers.length} (${percentage}%)
+- **Temps passé :** ⏱️ ${Math.floor(duration/60)}min${duration%60}s
+
+---
+
+## 📝 Détail des réponses
+1. "Je suis pas malade" → Incorrecte ❌ (Correction: "Je ne suis pas malade")
+2. "Mon beau père est strict" → Incorrecte ❌ (Correction: "Mon beau-père est strict")  
+3. "J'ai maths à 9h" → Incorrecte ❌ (Correction: "J'ai cours de maths à 9h")
+4. "Je déteste l'informatique..." → Correcte ✅
+
+---
+
+*Exercice FLE généré automatiquement*`;
+
+                const blob = new Blob([markdown], { type: 'text/markdown' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `fle-correction-erreurs-${new Date().toISOString().split('T')[0]}.md`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        const exercise = new ExerciseManager();
+    </script>
+</body>
+</html>
