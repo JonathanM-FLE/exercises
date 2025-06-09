@@ -105,14 +105,35 @@ def update_index_html(exercises):
     exercises_js = ',\n'.join(js_exercises)
     
     # Remplacer la section exercises dans le JavaScript
-    pattern = r'(this\.exercises = \[)[^;]+(;)'
-    replacement = f'\\1\n{exercises_js}\n                \\2'
+    # Pattern pour capturer la première occurrence dans le constructor
+    pattern = r'(constructor\(\) \{[^}]*this\.exercises = \[)[^\]]*(\];)'
+    replacement_made = False
     
-    new_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
+    if re.search(pattern, content, flags=re.DOTALL):
+        replacement = f'\\1\n{exercises_js}\n                \\2'
+        new_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
+        replacement_made = True
+    else:
+        # Fallback: chercher juste this.exercises = [...]; et prendre la première occurrence
+        simple_pattern = r'(this\.exercises = \[)[^\]]*(\];)'
+        matches = list(re.finditer(simple_pattern, content, flags=re.DOTALL))
+        if matches:
+            # Prendre la première occurrence
+            match = matches[0]
+            start_pos = match.start(1) + len(match.group(1))
+            end_pos = match.start(2)
+            new_content = (content[:start_pos] + 
+                          f'\n{exercises_js}\n                ' + 
+                          content[end_pos:])
+            replacement_made = True
     
     # Vérifier que le remplacement a eu lieu
-    if new_content == content:
+    if not replacement_made:
         print("⚠️  Impossible de trouver la section à remplacer dans index.html")
+        print("🔍 Sections recherchées :")
+        print("   - constructor() { ... this.exercises = [...]")
+        print("   - this.exercises = [...]")
+        print("\n💡 Vérifiez que index.html contient une de ces structures")
         return False
     
     # Écrire le nouveau fichier
