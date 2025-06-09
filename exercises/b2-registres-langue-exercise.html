@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les registres de langue en français</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background-color: #F7F3F0;
+            color: #2F2F2F;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .cecr-badge {
+            position: absolute;
+            top: -10px;
+            right: 0;
+            background: #F0E6FF;
+            color: #6B46C1;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        h1 {
+            color: #CC785C;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .example-box {
+            background: #E5E5E5;
+            padding: 20px;
+            border-left: 4px solid #CC785C;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+
+        .instruction {
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: relative;
+            cursor: help;
+        }
+
+        .instruction:hover::after {
+            content: attr(data-en);
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #2F2F2F;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 100;
+        }
+
+        .exercise-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .letter-card {
+            background: #FAFAFA;
+            border: 2px solid #E5E5E5;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .letter-card:hover {
+            border-color: #CC785C;
+            background: #FFF8F0;
+        }
+
+        .letter-card.selected {
+            border-color: #CC785C;
+            background: #FFF0E6;
+        }
+
+        .letter-card.correct {
+            border-color: #4A8B3A;
+            background: #F0F8F0;
+        }
+
+        .letter-card.incorrect {
+            border-color: #C53030;
+            background: #FFF0F0;
+        }
+
+        .letter-header {
+            font-weight: bold;
+            color: #CC785C;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .letter-content {
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .drop-zones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .drop-zone {
+            background: #F0F8FF;
+            border: 3px dashed #B0C4DE;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone.drag-over {
+            border-color: #CC785C;
+            background: #FFF8F0;
+        }
+
+        .drop-zone h3 {
+            color: #4682B4;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .drop-zone .dropped-letter {
+            background: white;
+            border: 1px solid #CC785C;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .btn {
+            background: #CC785C;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #B8694A;
+        }
+
+        .btn:disabled {
+            background: #E5E5E5;
+            cursor: not-allowed;
+        }
+
+        .feedback {
+            background: #E8F5E8;
+            border: 1px solid #4A8B3A;
+            color: #2D5A2D;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .feedback.error {
+            background: #FFE8E8;
+            border-color: #C53030;
+            color: #8B0000;
+        }
+
+        .score {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .export-section {
+            background: #F8F9FA;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .drop-zones {
+                grid-template-columns: 1fr;
+            }
+            
+            .cecr-badge {
+                position: static;
+                display: inline-block;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cecr-badge">B2</div>
+        
+        <h1>Les registres de langue</h1>
+        <p class="subtitle">Classez les lettres selon leur niveau de formalité</p>
+        
+        <div class="example-box">
+            <strong>📖 Rappel :</strong> Les registres de langue permettent d'adapter notre expression selon le contexte et l'interlocuteur :
+            <br>• <strong>Très familier :</strong> entre amis très proches (SMS, argot)
+            <br>• <strong>Familier :</strong> relations informelles mais polies
+            <br>• <strong>Courant/neutre :</strong> situations quotidiennes standard
+            <br>• <strong>Soutenu :</strong> contextes officiels et respectueux
+            <br>• <strong>Très soutenu :</strong> protocole, administration de haut niveau
+        </div>
+
+        <div class="exercise-container">
+            <div class="instruction" data-en="Drag each letter to the appropriate formality level">
+                🎯 Glissez chaque lettre vers son niveau de formalité approprié
+            </div>
+
+            <div id="letters-container">
+                <!-- Letters will be populated by JavaScript -->
+            </div>
+
+            <div class="drop-zones">
+                <div class="drop-zone" data-level="tres-familier">
+                    <h3>Très familier</h3>
+                    <small>Amis proches, SMS</small>
+                </div>
+                <div class="drop-zone" data-level="familier">
+                    <h3>Familier</h3>
+                    <small>Relations informelles</small>
+                </div>
+                <div class="drop-zone" data-level="courant">
+                    <h3>Courant</h3>
+                    <small>Situations standard</small>
+                </div>
+                <div class="drop-zone" data-level="soutenu">
+                    <h3>Soutenu</h3>
+                    <small>Contextes officiels</small>
+                </div>
+                <div class="drop-zone" data-level="tres-soutenu">
+                    <h3>Très soutenu</h3>
+                    <small>Protocole, haute administration</small>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn" onclick="exercise.checkAnswers()">Vérifier les réponses</button>
+                <button class="btn" onclick="exercise.reset()">Recommencer</button>
+            </div>
+
+            <div id="feedback" class="feedback"></div>
+            <div id="score" class="score" style="display: none;"></div>
+        </div>
+
+        <div class="export-section">
+            <button class="btn" onclick="exercise.exportResults()">📄 Exporter les résultats (Markdown)</button>
+        </div>
+    </div>
+
+    <script>
+        const exerciseConfig = {
+            type: "drag_drop",
+            title: "Les registres de langue",
+            subtitle: "Classement par niveau de formalité",
+            cecr_level: "B2",
+            auto_correct: true,
+            filename: "b2-registres-langue-drag.html",
+            content: {
+                question: "Glissez chaque lettre vers son niveau de formalité approprié",
+                question_en: "Drag each letter to the appropriate formality level",
+                example: "Les registres de langue permettent d'adapter notre expression selon le contexte",
+                letters: [
+                    {
+                        id: "letter1",
+                        level: "tres-familier",
+                        context: "SMS/message à un ami proche",
+                        content: "Salut mec ! Alors, tu viens à ma crémaillère samedi ou pas ? J'ai invité toute la bande. On va se faire un super apéro sur la terrasse. Ramène ta copine si tu veux ! Dis-moi vite, faut que je sache pour les courses. Bisous ! Tom"
+                    },
+                    {
+                        id: "letter2", 
+                        level: "familier",
+                        context: "Email à un voisin sympa",
+                        content: "Bonjour Pierre, Comment ça va ? J'espère que tout se passe bien pour toi. Je t'écris parce que j'organise une petite fête samedi soir pour mon emménagement. Ça risque de faire un peu de bruit jusqu'à minuit environ. Je voulais te prévenir pour pas que ça te dérange. Si ça te dit de passer boire un verre, tu es le bienvenu ! À bientôt, Thomas"
+                    },
+                    {
+                        id: "letter3",
+                        level: "courant", 
+                        context: "Email à la syndic de copropriété",
+                        content: "Madame la Syndic, Je vous contacte pour vous informer que j'organise une réception à mon domicile le samedi 15 juin de 19h à minuit. Conformément au règlement de copropriété, je sollicite votre autorisation pour cette manifestation privée. Je m'engage à respecter les horaires et à veiller à ce que les nuisances sonores restent raisonnables. Je vous remercie de votre compréhension. Cordialement, Thomas Dubois"
+                    },
+                    {
+                        id: "letter4",
+                        level: "soutenu",
+                        context: "Lettre officielle au maire", 
+                        content: "Monsieur le Maire, J'ai l'honneur de solliciter votre bienveillance concernant l'organisation d'une réception privée que je souhaite donner à mon domicile, sis au 15 rue de la Paix, le samedi 15 juin de 19h à minuit. Cette manifestation, destinée à célébrer mon installation dans votre commune, réunira une vingtaine de personnes. Je m'engage à prendre toutes les dispositions nécessaires pour que cette soirée se déroule dans le respect du voisinage et de la tranquillité publique. Je vous prie d'agréer, Monsieur le Maire, l'expression de mes salutations respectueuses. Thomas Dubois"
+                    },
+                    {
+                        id: "letter5",
+                        level: "tres-soutenu",
+                        context: "Courrier au Préfet",
+                        content: "Monsieur le Préfet, J'ai l'insigne honneur de porter à votre haute bienveillance une demande d'autorisation concernant l'organisation d'une réception privée en mon domicile. Cette manifestation, prévue le samedi 15 juin 2025 de 19h à minuit au 15 rue de la Paix à Caen, a pour objet de célébrer mon installation dans le département du Calvados où j'ai été récemment nommé. Soucieux de me conformer scrupuleusement à la réglementation en vigueur et de préserver l'ordre public, je sollicite respectueusement votre autorisation pour cette réunion qui ne devrait pas excéder vingt-cinq personnes. Veuillez agréer, Monsieur le Préfet, l'hommage de ma très haute considération. Thomas Dubois"
+                    }
+                ]
+            }
+        };
+
+        class ExerciseManager {
+            constructor() {
+                this.cecrLevel = exerciseConfig.cecr_level;
+                this.startTime = new Date();
+                this.answers = {};
+                this.isCompleted = false;
+                this.init();
+            }
+
+            init() {
+                this.renderLetters();
+                this.setupDragAndDrop();
+            }
+
+            renderLetters() {
+                const container = document.getElementById('letters-container');
+                container.innerHTML = exerciseConfig.content.letters.map(letter => `
+                    <div class="letter-card" draggable="true" data-id="${letter.id}" data-level="${letter.level}">
+                        <div class="letter-header">${letter.context}</div>
+                        <div class="letter-content">${letter.content}</div>
+                    </div>
+                `).join('');
+            }
+
+            setupDragAndDrop() {
+                // Setup draggable letters
+                document.querySelectorAll('.letter-card').forEach(letter => {
+                    letter.addEventListener('dragstart', (e) => {
+                        e.dataTransfer.setData('text/plain', letter.dataset.id);
+                        letter.style.opacity = '0.5';
+                    });
+
+                    letter.addEventListener('dragend', (e) => {
+                        letter.style.opacity = '1';
+                    });
+                });
+
+                // Setup drop zones
+                document.querySelectorAll('.drop-zone').forEach(zone => {
+                    zone.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        zone.classList.add('drag-over');
+                    });
+
+                    zone.addEventListener('dragleave', (e) => {
+                        zone.classList.remove('drag-over');
+                    });
+
+                    zone.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        zone.classList.remove('drag-over');
+                        
+                        const letterId = e.dataTransfer.getData('text/plain');
+                        const letter = document.querySelector(`[data-id="${letterId}"]`);
+                        
+                        if (letter) {
+                            // Remove from previous zone if any
+                            const previousZone = letter.parentElement;
+                            if (previousZone.classList.contains('drop-zone')) {
+                                previousZone.removeChild(letter);
+                            }
+                            
+                            // Add to new zone
+                            const droppedDiv = document.createElement('div');
+                            droppedDiv.className = 'dropped-letter';
+                            droppedDiv.textContent = `${letter.querySelector('.letter-header').textContent}`;
+                            droppedDiv.dataset.letterId = letterId;
+                            zone.appendChild(droppedDiv);
+                            
+                            // Hide original letter
+                            letter.style.display = 'none';
+                            
+                            // Store answer
+                            this.answers[letterId] = zone.dataset.level;
+                        }
+                    });
+                });
+            }
+
+            checkAnswers() {
+                if (Object.keys(this.answers).length !== exerciseConfig.content.letters.length) {
+                    this.showFeedback("Veuillez placer toutes les lettres avant de vérifier.", "error");
+                    return;
+                }
+
+                let correct = 0;
+                const total = exerciseConfig.content.letters.length;
+
+                exerciseConfig.content.letters.forEach(letter => {
+                    const userAnswer = this.answers[letter.id];
+                    const correctAnswer = letter.level;
+                    
+                    if (userAnswer === correctAnswer) {
+                        correct++;
+                    }
+                });
+
+                this.isCompleted = true;
+                const percentage = Math.round((correct / total) * 100);
+                
+                this.showScore(correct, total, percentage);
+                
+                if (percentage >= 80) {
+                    this.showFeedback(`Excellent ! Vous maîtrisez bien les registres de langue. Score : ${correct}/${total} (${percentage}%)`, "success");
+                } else if (percentage >= 60) {
+                    this.showFeedback(`Bien ! Vous avez une bonne compréhension des registres. Continuez à vous exercer. Score : ${correct}/${total} (${percentage}%)`, "success");
+                } else {
+                    this.showFeedback(`À améliorer. Révisons les caractéristiques de chaque registre. Score : ${correct}/${total} (${percentage}%)`, "error");
+                }
+            }
+
+            showFeedback(message, type) {
+                const feedback = document.getElementById('feedback');
+                feedback.textContent = message;
+                feedback.className = `feedback ${type === 'error' ? 'error' : ''}`;
+                feedback.style.display = 'block';
+            }
+
+            showScore(correct, total, percentage) {
+                const scoreElement = document.getElementById('score');
+                scoreElement.innerHTML = `
+                    <strong>Résultat :</strong> ${correct}/${total} correct${correct > 1 ? 's' : ''} (${percentage}%)
+                `;
+                scoreElement.style.display = 'block';
+            }
+
+            reset() {
+                this.answers = {};
+                this.isCompleted = false;
+                
+                // Remove all dropped letters
+                document.querySelectorAll('.dropped-letter').forEach(item => item.remove());
+                
+                // Show all original letters
+                document.querySelectorAll('.letter-card').forEach(letter => {
+                    letter.style.display = 'block';
+                    letter.classList.remove('correct', 'incorrect');
+                });
+                
+                // Hide feedback and score
+                document.getElementById('feedback').style.display = 'none';
+                document.getElementById('score').style.display = 'none';
+            }
+
+            exportResults() {
+                const endTime = new Date();
+                const duration = Math.round((endTime - this.startTime) / 1000);
+                const minutes = Math.floor(duration / 60);
+                const seconds = duration % 60;
+
+                let report = `# 📚 Résultats FLE - B2 - DRAG_DROP\n\n`;
+                report += `**Niveau CECR :** B2\n`;
+                report += `**Date :** ${endTime.toLocaleDateString('fr-FR')}\n`;
+                report += `**Exercice :** ${exerciseConfig.title}\n\n`;
+                report += `---\n\n`;
+
+                if (this.isCompleted) {
+                    const correct = Object.keys(this.answers).filter(letterId => {
+                        const letter = exerciseConfig.content.letters.find(l => l.id === letterId);
+                        return this.answers[letterId] === letter.level;
+                    }).length;
+                    const total = exerciseConfig.content.letters.length;
+                    const percentage = Math.round((correct / total) * 100);
+
+                    report += `## 📊 Performance\n`;
+                    report += `- **Score final :** ${correct}/${total} (${percentage}%)\n`;
+                    report += `- **Temps passé :** ⏱️ ${minutes}min${seconds}s\n\n`;
+                    report += `---\n\n`;
+                    report += `## 📝 Détail des réponses\n\n`;
+
+                    exerciseConfig.content.letters.forEach(letter => {
+                        const userAnswer = this.answers[letter.id];
+                        const correct = userAnswer === letter.level;
+                        report += `**${letter.context} :**\n`;
+                        report += `- Votre réponse : ${userAnswer} ${correct ? '✅' : '❌'}\n`;
+                        if (!correct) {
+                            report += `- Réponse correcte : ${letter.level}\n`;
+                        }
+                        report += `\n`;
+                    });
+                } else {
+                    report += `## 📊 Performance\n`;
+                    report += `- **Status :** Exercice non terminé\n`;
+                    report += `- **Temps passé :** ⏱️ ${minutes}min${seconds}s\n\n`;
+                }
+
+                report += `---\n\n`;
+                report += `*Exercice FLE généré automatiquement*`;
+
+                // Create and download file
+                const blob = new Blob([report], { type: 'text/markdown' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `resultat-registres-langue-${endTime.toISOString().split('T')[0]}.md`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        // Initialize exercise
+        const exercise = new ExerciseManager();
+    </script>
+</body>
+</html>
