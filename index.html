@@ -343,56 +343,6 @@
             }
 
             async loadExercises() {
-                // Auto-detect exercises from the exercises/ directory
-                const exerciseFiles = [
-                    'a2-negation-etre-texte-trous.html',
-                    'a2-vocabulaire-descriptif-qcm.html', 
-                    'a2-correction-erreurs-vrai-faux.html',
-                    'a2-prononciation-regles-pronunciation.html'
-                ];
-
-                this.exercises = [
-                    {
-                        filename: 'a2-correction-erreurs-vrai-faux.html',
-                        title: 'Correction d'erreurs',
-                        level: 'A2',
-                        type: 'vrai_faux',
-                        description: 'Grammaire et orthographe française - Niveau A2',
-                        url: './exercises/a2-correction-erreurs-vrai-faux.html'
-                    },
-                    {
-                        filename: 'a2-negation-etre-texte-trous.html',
-                        title: 'La forme négative avec "être"',
-                        level: 'A2',
-                        type: 'texte_trous',
-                        description: 'Grammaire française - Niveau A2',
-                        url: './exercises/a2-negation-etre-texte-trous.html'
-                    },
-                    {
-                        filename: 'a2-prononciation-regles-pronunciation.html',
-                        title: 'Règles de prononciation',
-                        level: 'A2',
-                        type: 'pronunciation',
-                        description: 'Phonétique française - Niveau A2',
-                        url: './exercises/a2-prononciation-regles-pronunciation.html'
-                    },
-                    {
-                        filename: 'a2-vocabulaire-descriptif-qcm.html',
-                        title: 'Vocabulaire descriptif',
-                        level: 'A2',
-                        type: 'qcm',
-                        description: 'Description des personnes - Niveau A2',
-                        url: './exercises/a2-vocabulaire-descriptif-qcm.html'
-                    },
-                    {
-                        filename: 'b2-registres-langue-exercise.html',
-                        title: 'Les registres de langue en français',
-                        level: 'B2',
-                        type: 'drag_drop',
-                        description: 'Classez les lettres selon leur niveau de formalité',
-                        url: './exercises/b2-registres-langue-exercise.html'
-                    }
-                ;
 
                 this.filteredExercises = [...this.exercises];
             }
