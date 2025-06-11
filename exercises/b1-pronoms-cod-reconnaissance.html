@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les pronoms COD - Reconnaissance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            line-height: 1.6;
+            color: #2F2F2F;
+            background-color: #F7F3F0;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .cecr-badge {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #E6F3FF;
+            color: #2F2F2F;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #E5E5E5;
+        }
+        
+        h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #2F2F2F;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        
+        .example-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #CC785C;
+        }
+        
+        .example-box h3 {
+            color: #CC785C;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .instruction {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted #CC785C;
+        }
+        
+        .instruction:hover::after {
+            content: attr(data-en);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2F2F2F;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .instruction:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 94%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #2F2F2F;
+            z-index: 1000;
+        }
+        
+        .exercise-container {
+            margin-bottom: 30px;
+        }
+        
+        .sentence-item {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #E5E5E5;
+        }
+        
+        .sentence-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+        }
+        
+        .sentence-number {
+            background: #CC785C;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .sentence-text {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .pronoun-highlight {
+            background: linear-gradient(120deg, #CC785C 0%, #e89b7d 100%);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        
+        .pronoun-highlight:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(204, 120, 92, 0.3);
+        }
+        
+        .answer-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .answer-label {
+            font-weight: 500;
+            color: #2F2F2F;
+            min-width: 200px;
+        }
+        
+        .answer-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #E5E5E5;
+            border-radius: 8px;
+            font-size: 16px;
+            min-width: 250px;
+            transition: all 0.2s ease;
+        }
+        
+        .answer-input:focus {
+            outline: none;
+            border-color: #CC785C;
+            box-shadow: 0 0 0 3px rgba(204, 120, 92, 0.1);
+        }
+        
+        .help-text {
+            font-size: 14px;
+            color: #666;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        
+        .submit-btn {
+            background: #CC785C;
+            color: white;
+        }
+        
+        .submit-btn:hover {
+            background: #b8694f;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(204, 120, 92, 0.3);
+        }
+        
+        .export-btn {
+            background: #E5E5E5;
+            color: #2F2F2F;
+            border: 1px solid #ccc;
+        }
+        
+        .export-btn:hover {
+            background: #d0d0d0;
+            transform: translateY(-1px);
+        }
+        
+        .results {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid #E5E5E5;
+        }
+        
+        .result-item {
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .correct {
+            border-left: 4px solid #4A8B3A;
+            background: #f0f8f0;
+        }
+        
+        .incorrect {
+            border-left: 4px solid #C53030;
+            background: #fef5f5;
+        }
+        
+        .result-text {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .correction {
+            color: #4A8B3A;
+            font-weight: 600;
+        }
+        
+        .score {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 20px;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .cecr-badge {
+                position: static;
+                display: inline-block;
+                margin-bottom: 20px;
+            }
+            
+            .answer-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .answer-label {
+                min-width: auto;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cecr-badge">B1</div>
+    
+    <div class="header">
+        <h1>Les pronoms COD - Reconnaissance</h1>
+        <div class="subtitle">Grammaire française</div>
+    </div>
+    
+    <div class="example-box">
+        <h3>📖 Exemple</h3>
+        <p><strong>Phrase :</strong> "Je l'ai pelée" → <strong>l'</strong> = la tomate</p>
+        <p><em>Les pronoms COD (le, la, l', les) remplacent un complément d'objet direct.</em></p>
+    </div>
+    
+    <div class="instruction" data-en="In these sentences from the recipe, identify the COD pronoun and indicate what it replaces.">
+        <strong>Consigne :</strong> Dans ces phrases tirées de la recette, identifiez le pronom COD et indiquez ce qu'il remplace.
+    </div>
+    
+    <div class="exercise-container">
+        <div class="sentence-item">
+            <div class="sentence-number">1</div>
+            <div class="sentence-text">
+                "Les tomates ? Je <span class="pronoun-highlight">les</span> lave d'abord."
+            </div>
+            <div class="answer-section">
+                <span class="answer-label">Le pronom COD remplace :</span>
+                <input type="text" class="answer-input" id="answer1" placeholder="Entrez votre réponse">
+            </div>
+            <div class="help-text">💡 Regardez le début de la phrase</div>
+        </div>
+        
+        <div class="sentence-item">
+            <div class="sentence-number">2</div>
+            <div class="sentence-text">
+                "La courgette, il faut <span class="pronoun-highlight">l'</span>émincer finement."
+            </div>
+            <div class="answer-section">
+                <span class="answer-label">Le pronom COD remplace :</span>
+                <input type="text" class="answer-input" id="answer2" placeholder="Entrez votre réponse">
+            </div>
+        </div>
+        
+        <div class="sentence-item">
+            <div class="sentence-number">3</div>
+            <div class="sentence-text">
+                "Ce poivron rouge, je <span class="pronoun-highlight">le</span> coupe en lamelles."
+            </div>
+            <div class="answer-section">
+                <span class="answer-label">Le pronom COD remplace :</span>
+                <input type="text" class="answer-input" id="answer3" placeholder="Entrez votre réponse">
+            </div>
+        </div>
+        
+        <div class="sentence-item">
+            <div class="sentence-number">4</div>
+            <div class="sentence-text">
+                "Cette aubergine est parfaite, je <span class="pronoun-highlight">la</span> garde pour la ratatouille."
+            </div>
+            <div class="answer-section">
+                <span class="answer-label">Le pronom COD remplace :</span>
+                <input type="text" class="answer-input" id="answer4" placeholder="Entrez votre réponse">
+            </div>
+        </div>
+        
+        <div class="sentence-item">
+            <div class="sentence-number">5</div>
+            <div class="sentence-text">
+                "Mes herbes aromatiques, je <span class="pronoun-highlight">les</span> ajoute à la fin."
+            </div>
+            <div class="answer-section">
+                <span class="answer-label">Le pronom COD remplace :</span>
+                <input type="text" class="answer-input" id="answer5" placeholder="Entrez votre réponse">
+            </div>
+        </div>
+    </div>
+    
+    <div class="buttons">
+        <button type="button" class="submit-btn" onclick="exercise.checkAnswers()">Valider mes réponses</button>
+        <button type="button" class="export-btn" onclick="exercise.exportMarkdown()">📄 Exporter résultats</button>
+    </div>
+    
+    <div id="results" class="results">
+        <h3>📊 Résultats</h3>
+        <div id="resultDetails"></div>
+        <div class="score" id="score"></div>
+    </div>
+    
+    <script>
+        class ExerciseManager {
+            constructor() {
+                this.cecrLevel = 'B1';
+                this.startTime = new Date();
+                this.answers = [];
+                this.correctAnswers = {
+                    answer1: ['les tomates'],
+                    answer2: ['la courgette'],
+                    answer3: ['ce poivron rouge', 'le poivron rouge'],
+                    answer4: ['cette aubergine', "l'aubergine"],
+                    answer5: ['mes herbes aromatiques', 'les herbes aromatiques']
+                };
+            }
+            
+            normalizeAnswer(answer) {
+                return answer.toLowerCase().trim().replace(/\s+/g, ' ');
+            }
+            
+            checkAnswers() {
+                let score = 0;
+                let resultHTML = '';
+                this.answers = [];
+                
+                for (let i = 1; i <= 5; i++) {
+                    const input = document.getElementById(`answer${i}`);
+                    const userAnswer = this.normalizeAnswer(input.value);
+                    const acceptableAnswers = this.correctAnswers[`answer${i}`].map(a => this.normalizeAnswer(a));
+                    
+                    const isCorrect = acceptableAnswers.some(answer => 
+                        userAnswer.includes(answer) || answer.includes(userAnswer)
+                    );
+                    
+                    this.answers.push({
+                        question: i,
+                        userAnswer: input.value,
+                        correct: isCorrect,
+                        expectedAnswers: this.correctAnswers[`answer${i}`]
+                    });
+                    
+                    if (isCorrect) {
+                        score++;
+                        input.style.borderColor = '#4A8B3A';
+                        resultHTML += `
+                            <div class="result-item correct">
+                                <div class="result-text">Question ${i} : ✓ Correct</div>
+                                <div class="correction">Réponse acceptée : ${input.value}</div>
+                            </div>
+                        `;
+                    } else {
+                        input.style.borderColor = '#C53030';
+                        resultHTML += `
+                            <div class="result-item incorrect">
+                                <div class="result-text">Question ${i} : ✗ Incorrect</div>
+                                <div class="correction">Réponse(s) attendue(s) : ${this.correctAnswers[`answer${i}`].join(' ou ')}</div>
+                            </div>
+                        `;
+                    }
+                }
+                
+                document.getElementById('resultDetails').innerHTML = resultHTML;
+                document.getElementById('score').innerHTML = `Score : ${score}/5 (${Math.round(score/5*100)}%)`;
+                document.getElementById('results').style.display = 'block';
+            }
+            
+            exportMarkdown() {
+                const endTime = new Date();
+                const duration = Math.round((endTime - this.startTime) / 1000);
+                const minutes = Math.floor(duration / 60);
+                const seconds = duration % 60;
+                
+                const score = this.answers.filter(a => a.correct).length;
+                const percentage = Math.round((score / this.answers.length) * 100);
+                
+                let markdown = `# 📚 Résultats FLE - ${this.cecrLevel} - Reconnaissance
+
+**Niveau CECR :** ${this.cecrLevel}  
+**Date :** ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}  
+**Exercice :** Les pronoms COD - Reconnaissance  
+
+---
+
+## 📊 Performance
+- **Score final :** ${score > this.answers.length/2 ? '✅' : '❌'} ${score}/${this.answers.length} (${percentage}%)
+- **Temps passé :** ⏱️ ${minutes}min${seconds}s
+
+---
+
+## 📝 Détail des réponses
+`;
+
+                this.answers.forEach(answer => {
+                    const status = answer.correct ? '✅' : '❌';
+                    markdown += `
+**Question ${answer.question} :** ${status}  
+- Réponse donnée : "${answer.userAnswer}"  
+- Réponse(s) attendue(s) : ${answer.expectedAnswers.join(' ou ')}  
+`;
+                });
+
+                markdown += `
+---
+
+*Exercice FLE généré automatiquement*`;
+
+                // Téléchargement du fichier
+                const blob = new Blob([markdown], { type: 'text/markdown' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `resultats-pronoms-cod-${new Date().toISOString().split('T')[0]}.md`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+        }
+        
+        // Initialisation
+        const exercise = new ExerciseManager();
+        
+        // Animation des pronoms
+        document.querySelectorAll('.pronoun-highlight').forEach(pronoun => {
+            pronoun.addEventListener('click', function() {
+                this.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>
