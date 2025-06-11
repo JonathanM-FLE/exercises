@@ -464,9 +464,26 @@
     </div>
     
     <script>
+        // ✅ OBLIGATOIRE: Variable exerciseConfig pour auto-catalog
+        const exerciseConfig = {
+            type: "qcm",
+            title: "Les pronoms COI - Application",
+            subtitle: "Grammaire française", 
+            cecr_level: "B1",
+            auto_correct: true,
+            content: {
+                question: "Remplacez les mots soulignés par le pronom COI approprié.",
+                question_en: "Replace the underlined words with the appropriate COI pronoun.",
+                example: "Le pronom COI remplace un complément d'objet indirect."
+            }
+        };
+        
+        // ✅ CORRECT: Class lit depuis exerciseConfig
         class ExerciseManager {
             constructor() {
-                this.cecrLevel = 'B1';
+                this.cecrLevel = exerciseConfig.cecr_level;
+                this.exerciseType = exerciseConfig.type;
+                this.title = exerciseConfig.title;
                 this.startTime = new Date();
                 this.answers = [];
                 this.correctAnswers = {
@@ -536,11 +553,11 @@
                 const score = this.answers.filter(a => a.correct).length;
                 const percentage = Math.round((score / this.answers.length) * 100);
                 
-                let markdown = `# 📚 Résultats FLE - ${this.cecrLevel} - QCM
+                let markdown = `# 📚 Résultats FLE - ${this.cecrLevel} - ${this.exerciseType.toUpperCase()}
 
 **Niveau CECR :** ${this.cecrLevel}  
 **Date :** ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}  
-**Exercice :** Les pronoms COI - Application  
+**Exercice :** ${this.title}  
 
 ---
 

@@ -387,9 +387,26 @@
     </div>
     
     <script>
+        // ✅ OBLIGATOIRE: Variable exerciseConfig pour auto-catalog
+        const exerciseConfig = {
+            type: "reponse_libre",
+            title: "Les pronoms COD - Reconnaissance", 
+            subtitle: "Grammaire française",
+            cecr_level: "B1",
+            auto_correct: true,
+            content: {
+                question: "Dans ces phrases tirées de la recette, identifiez le pronom COD et indiquez ce qu'il remplace.",
+                question_en: "In these sentences from the recipe, identify the COD pronoun and indicate what it replaces.",
+                example: "Les pronoms COD (le, la, l', les) remplacent un complément d'objet direct."
+            }
+        };
+        
+        // ✅ CORRECT: Class lit depuis exerciseConfig
         class ExerciseManager {
             constructor() {
-                this.cecrLevel = 'B1';
+                this.cecrLevel = exerciseConfig.cecr_level;
+                this.exerciseType = exerciseConfig.type;
+                this.title = exerciseConfig.title;
                 this.startTime = new Date();
                 this.answers = [];
                 this.correctAnswers = {
@@ -460,11 +477,11 @@
                 const score = this.answers.filter(a => a.correct).length;
                 const percentage = Math.round((score / this.answers.length) * 100);
                 
-                let markdown = `# 📚 Résultats FLE - ${this.cecrLevel} - Reconnaissance
+                let markdown = `# 📚 Résultats FLE - ${this.cecrLevel} - ${this.exerciseType.toUpperCase()}
 
 **Niveau CECR :** ${this.cecrLevel}  
 **Date :** ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}  
-**Exercice :** Les pronoms COD - Reconnaissance  
+**Exercice :** ${this.title}  
 
 ---
 
